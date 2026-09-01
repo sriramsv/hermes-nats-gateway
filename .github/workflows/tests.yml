@@ -110,7 +110,9 @@ jobs:
           for package_name, wheel_name in expected_wheels.items():
               package = packages[package_name]
               assert Path(package["source"]["registry"]).name == "sdk-wheelhouse"
-              assert package["wheels"] == [{"path": wheel_name}]
+              wheels = package["wheels"]
+              assert len(wheels) == 1
+              assert Path(wheels[0]["path"]).name == wheel_name
 
           baseline = load_packages(Path(os.environ["GITHUB_WORKSPACE"], "uv.lock"))
           ignored = {
